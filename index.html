@@ -92,20 +92,27 @@
   /* Screenshot strip */
   .shots { padding: 8px 0 56px; }
   .shots h2, .features h2 { font-size: 1.8rem; margin: 0 0 18px; }
+  /* Full-width band that drifts on its own (see the script at the end); a
+     real scroll area underneath, so touch, trackpad and keyboard still work. */
   .strip {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 220px;
+    display: flex;
     gap: 18px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 14px;
+    padding: 4px 0 8px;
+    scrollbar-width: none;
+    /* Soft fade at both screen edges. */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
   }
+  .strip::-webkit-scrollbar { display: none; }
   .strip img {
-    scroll-snap-align: start;
+    flex: none;
+    width: 220px;
     border: 3px solid var(--line);
     border-radius: 20px;
     background: var(--card);
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   /* Features */
@@ -148,7 +155,7 @@
   @media (max-width: 540px) {
     .wrap { padding: 0 16px; }
     .grid { grid-template-columns: 1fr; }
-    .strip { grid-auto-columns: 70%; }
+    .strip img { width: 60vw; }
   }
 </style>
 </head>
@@ -181,13 +188,13 @@
   <section class="shots" aria-labelledby="shots-title">
     <div class="wrap">
       <h2 id="shots-title">Take a look</h2>
-      <div class="strip">
-        <img src="assets/02-four-bears.webp" alt="Four bears: honey, polar, koala and panda, each on its own calculator" width="540" height="960" loading="lazy">
-        <img src="assets/03-simple-keys.webp" alt="The koala calculator with big keys" width="540" height="960" loading="lazy">
-        <img src="assets/04-pocket-memory.webp" alt="The panda pocket calculator with memory keys" width="540" height="960" loading="lazy">
-        <img src="assets/05-copy.webp" alt="Holding the display to copy the number" width="540" height="960" loading="lazy">
-        <img src="assets/06-sounds.webp" alt="The options panel with bears, layouts, sound sets and volume" width="540" height="960" loading="lazy">
-      </div>
+    </div>
+    <div class="strip" tabindex="0" aria-label="App screenshots">
+      <img src="assets/02-four-bears.webp" alt="Four bears: honey, polar, koala and panda, each on its own calculator" width="540" height="960">
+      <img src="assets/03-simple-keys.webp" alt="The koala calculator with big keys" width="540" height="960">
+      <img src="assets/04-pocket-memory.webp" alt="The panda pocket calculator with memory keys" width="540" height="960">
+      <img src="assets/05-copy.webp" alt="Holding the display to copy the number" width="540" height="960">
+      <img src="assets/06-sounds.webp" alt="The options panel with bears, layouts, sound sets and volume" width="540" height="960">
     </div>
   </section>
 
@@ -235,5 +242,91 @@
   </div>
 </footer>
 
+<script>
+  // Screenshot band: drifts slowly on its own in an endless loop. The wheel or
+  // trackpad over it gives it a push (the page still scrolls normally), and on
+  // touch screens it's an ordinary swipeable strip — the drift pauses while a
+  // finger is on it. With "reduce motion" on, it only moves when you move it.
+  (() => {
+    const strip = document.querySelector('.strip');
+    const originals = [...strip.children];
+    const DRIFT = 30; // px per second
+
+    // Repeat the screenshots so the loop never shows a gap: the distance from
+    // the first image to its first copy is one loop, and there must be at
+    // least a screen's worth more after it.
+    const addSet = () => {
+      for (const img of originals) {
+        const copy = img.cloneNode();
+        copy.alt = '';
+        copy.setAttribute('aria-hidden', 'true');
+        strip.append(copy);
+      }
+    };
+    let loop = 0;
+    const measure = () => {
+      if (strip.children.length === originals.length) addSet();
+      loop = strip.children[originals.length].offsetLeft - strip.children[0].offsetLeft;
+      while (strip.scrollWidth < loop + strip.clientWidth * 2) addSet();
+    };
+    measure();
+    window.addEventListener('resize', measure);
+
+    let pos = 0;      // fractional scroll position (scrollLeft is rounded)
+    let boost = 0;    // extra px per second from the wheel, fading out
+    let touching = false;
+
+    // Keep the position inside one loop so the wrap is seamless.
+    const wrap = () => {
+      if (strip.scrollLeft >= loop) strip.scrollLeft -= loop;
+      else if (strip.scrollLeft <= 0) strip.scrollLeft += loop;
+      pos = strip.scrollLeft;
+    };
+    strip.scrollLeft = 1;
+    wrap();
+
+    strip.addEventListener('wheel', (e) => {
+      const sideways = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      boost = Math.min(boost + Math.abs(sideways ? e.deltaX : e.deltaY) * 6, 3000);
+      // A sideways trackpad swipe belongs to the strip; vertical wheel still
+      // scrolls the page.
+      if (sideways) e.preventDefault();
+    }, { passive: false });
+    // Any scroll the drift didn't make (a swipe, its momentum glide, the
+    // keyboard) takes over; the drift resumes once the strip has settled.
+    let userUntil = 0;
+    strip.addEventListener('touchstart', () => { touching = true; }, { passive: true });
+    strip.addEventListener('touchend', () => { touching = false; }, { passive: true });
+    strip.addEventListener('scroll', () => {
+      if (touching || Math.abs(strip.scrollLeft - Math.round(pos)) > 2) {
+        userUntil = performance.now() + 250;
+        wrap();
+      }
+    }, { passive: true });
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      if (touching || now < userUntil) {
+        pos = strip.scrollLeft;
+      } else {
+        const speed = (reduceMotion.matches ? 0 : DRIFT) + boost;
+        if (speed > 0.5) {
+          pos += speed * dt;
+          strip.scrollLeft = pos;
+          if (strip.scrollLeft >= loop) {
+            pos -= loop;
+            strip.scrollLeft = pos;
+          }
+        }
+      }
+      boost *= Math.pow(0.08, dt); // the push fades out over about a second
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+</script>
 </body>
 </html>
