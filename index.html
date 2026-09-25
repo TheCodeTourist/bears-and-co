@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bears &amp; Co: Cute Calculator</title>
+<meta name="description" content="A real calculator with a friendly bear who reacts to every tap. Four bears, big keys, gentle sounds. No ads, no tracking, works offline.">
+<meta name="theme-color" content="#FDF6EA">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<!-- Link previews (messages, social posts) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bears &amp; Co: Cute Calculator">
+<meta property="og:description" content="A real calculator with a friendly bear who reacts to every tap. No ads, no tracking.">
+<meta property="og:image" content="https://thecodetourist.github.io/bears-and-co/assets/og-image.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="500">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Same tokens as privacy.html, so the two pages read as one site. */
+  :root {
+    --bg: #FDF6EA;
+    --card: #FFFDF8;
+    --ink: #2A1810;
+    --muted: #6B5646;
+    --accent: #C17F54;
+    --line: #000000;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--accent); }
+  h1, h2, h3, .brand {
+    font-family: "Fredoka", system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header .wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+    padding-bottom: 8px;
+  }
+  header img { width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); }
+  .brand { font-size: 1.25rem; }
+
+  /* Hero */
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+    padding-top: 32px;
+    padding-bottom: 56px;
+  }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin: 0; }
+  .hero .tagline {
+    font-family: "Fredoka", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    color: var(--accent);
+    margin: 4px 0 18px;
+  }
+  .hero p.lead { font-size: 1.15rem; max-width: 34em; margin: 0 0 24px; }
+  .badge { display: inline-block; margin-left: -12px; } /* the badge art has built-in padding */
+  .badge img { width: 220px; }
+  .hero-shot img {
+    width: 100%;
+    max-width: 380px;
+    margin-left: auto;
+    border: 3px solid var(--line);
+    border-radius: 28px;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+  }
+
+  /* Screenshot strip */
+  .shots { padding: 8px 0 56px; }
+  .shots h2, .features h2 { font-size: 1.8rem; margin: 0 0 18px; }
+  .strip {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 220px;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 14px;
+  }
+  .strip img {
+    scroll-snap-align: start;
+    border: 3px solid var(--line);
+    border-radius: 20px;
+    background: var(--card);
+  }
+
+  /* Features */
+  .features { padding-bottom: 56px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .card {
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+    padding: 20px 22px;
+  }
+  .card h3 { font-size: 1.2rem; margin: 0 0 6px; color: var(--accent); }
+  .card p { margin: 0; }
+
+  /* Footer */
+  footer { border-top: 2px solid rgba(0,0,0,0.08); }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: space-between;
+    padding-top: 22px;
+    padding-bottom: 32px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  footer nav { display: flex; gap: 18px; }
+  .legal { flex-basis: 100%; font-size: 0.8rem; }
+
+  @media (max-width: 820px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 28px; padding-top: 16px; }
+    .hero-shot img { margin: 0 auto; max-width: 300px; }
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 540px) {
+    .wrap { padding: 0 16px; }
+    .grid { grid-template-columns: 1fr; }
+    .strip { grid-auto-columns: 70%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="assets/icon-192.webp" alt="" width="44" height="44">
+    <span class="brand">Bears &amp; Co</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Bears &amp; Co</h1>
+        <p class="tagline">Cute Calculator</p>
+        <p class="lead">A real calculator with a friendly bear who reacts to every tap. Big keys for small fingers, a pocket-calculator mode for grown-ups, and a bear who giggles when you tap it to start over.</p>
+        <a class="badge" href="https://play.google.com/store/apps/details?id=com.bearsandco.app">
+          <img src="assets/google-play-badge.png" alt="Get it on Google Play" width="646" height="250">
+        </a>
+      </div>
+      <div class="hero-shot">
+        <img src="assets/01-hero.webp" alt="The honey bear celebrating on top of the calculator, with 36 on the display" width="540" height="960">
+      </div>
+    </div>
+  </section>
+
+  <section class="shots" aria-labelledby="shots-title">
+    <div class="wrap">
+      <h2 id="shots-title">Take a look</h2>
+      <div class="strip">
+        <img src="assets/02-four-bears.webp" alt="Four bears: honey, polar, koala and panda, each on its own calculator" width="540" height="960" loading="lazy">
+        <img src="assets/03-simple-keys.webp" alt="The koala calculator with big keys" width="540" height="960" loading="lazy">
+        <img src="assets/04-pocket-memory.webp" alt="The panda pocket calculator with memory keys" width="540" height="960" loading="lazy">
+        <img src="assets/05-copy.webp" alt="Holding the display to copy the number" width="540" height="960" loading="lazy">
+        <img src="assets/06-sounds.webp" alt="The options panel with bears, layouts, sound sets and volume" width="540" height="960" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="features" aria-labelledby="features-title">
+    <div class="wrap">
+      <h2 id="features-title">What's inside</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Four bears</h3>
+          <p>Honey, polar, koala or panda. Each one has its own calculator colors, and every bear reacts to the keys you press.</p>
+        </div>
+        <div class="card">
+          <h3>Three keypads</h3>
+          <p>Simple big keys for little hands, a standard layout, or a classic pocket calculator with memory.</p>
+        </div>
+        <div class="card">
+          <h3>Gentle sounds</h3>
+          <p>Four soft sound sets (Bloop, Forest, Toybox and Hum), with a volume slider and mute.</p>
+        </div>
+        <div class="card">
+          <h3>Tap the bear</h3>
+          <p>The bear wakes up when you start and clears the calculator when you tap it, with a happy giggle.</p>
+        </div>
+        <div class="card">
+          <h3>Hold to copy</h3>
+          <p>Press and hold the display to copy the number, just like any other calculator.</p>
+        </div>
+        <div class="card">
+          <h3>No ads, no tracking</h3>
+          <p>No ads, no accounts and no data collection, and it works offline. Read the <a href="privacy.html">privacy policy</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 The Code Tourist</span>
+    <nav>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="mailto:thecodetourist@gmail.com">Contact</a>
+    </nav>
+    <p class="legal">Google Play and the Google Play logo are trademarks of Google LLC.</p>
+  </div>
+</footer>
+
+</body>
+</html>
