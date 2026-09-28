@@ -3,20 +3,44 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bears &amp; Co: Cute Calculator</title>
-<meta name="description" content="A real calculator with a friendly bear who reacts to every tap. Four bears, big keys, gentle sounds. No ads, no tracking, works offline.">
+<title>Bears &amp; Co: Cute Calculator App for Kids and Grown-ups</title>
+<meta name="description" content="A free, cute calculator app for Android with a cartoon bear who reacts to every tap. Big keys for kids, a pocket calculator with memory for grown-ups. No ads, no tracking, works offline.">
+<link rel="canonical" href="https://thecodetourist.github.io/bears-and-co/">
+<!-- Google Search Console: paste the verification tag it gives you here, e.g.
+<meta name="google-site-verification" content="XXXXXXXX"> -->
 <meta name="theme-color" content="#FDF6EA">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
 <!-- Link previews (messages, social posts) -->
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Bears &amp; Co">
+<meta property="og:url" content="https://thecodetourist.github.io/bears-and-co/">
 <meta property="og:title" content="Bears &amp; Co: Cute Calculator">
 <meta property="og:description" content="A real calculator with a friendly bear who reacts to every tap. No ads, no tracking.">
 <meta property="og:image" content="https://thecodetourist.github.io/bears-and-co/assets/og-image.png">
 <meta property="og:image:width" content="1024">
 <meta property="og:image:height" content="500">
+<meta property="og:image:alt" content="A cartoon bear sitting on top of a calculator">
 <meta name="twitter:card" content="summary_large_image">
+
+<!-- Structured data: tells search engines this page is about a free Android app.
+     No ratings are included on purpose; add them only once real ones exist. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Bears & Co: Cute Calculator",
+  "operatingSystem": "Android",
+  "applicationCategory": "UtilitiesApplication",
+  "description": "A real calculator with a friendly cartoon bear who reacts to every tap. Four bears, three keypad layouts and gentle sounds. No ads, no tracking, works offline.",
+  "url": "https://thecodetourist.github.io/bears-and-co/",
+  "image": "https://thecodetourist.github.io/bears-and-co/assets/og-image.png",
+  "downloadUrl": "https://play.google.com/store/apps/details?id=com.thecodetourist.bearsandco",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "author": { "@type": "Organization", "name": "The Code Tourist" }
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,6 +95,7 @@
   }
   .hero h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); margin: 0; }
   .hero .tagline {
+    display: block;
     font-family: "Fredoka", system-ui, sans-serif;
     font-weight: 500;
     font-size: clamp(1.3rem, 3vw, 1.7rem);
@@ -136,6 +161,13 @@
   .card h3 { font-size: 1.2rem; margin: 0 0 6px; color: var(--accent); }
   .card p { margin: 0; }
 
+  /* Questions */
+  .faq { padding-bottom: 56px; }
+  .faq .wrap > * { max-width: 44em; }
+  .faq h2 { font-size: 1.8rem; margin: 0 0 8px; }
+  .faq h3 { font-size: 1.15rem; margin: 22px 0 4px; color: var(--accent); }
+  .faq p { margin: 0; }
+
   /* Footer */
   footer { border-top: 2px solid rgba(0,0,0,0.08); }
   footer .wrap {
@@ -176,15 +208,14 @@
   <section class="hero">
     <div class="wrap">
       <div>
-        <h1>Bears &amp; Co</h1>
-        <p class="tagline">Cute Calculator</p>
+        <h1>Bears &amp; Co <span class="tagline">Cute Calculator</span></h1>
         <p class="lead">A real calculator with a friendly bear who reacts to every tap. Big keys for small fingers, a pocket-calculator mode for grown-ups, and a bear who giggles when you tap it to start over.</p>
-        <a class="badge" href="https://play.google.com/store/apps/details?id=com.bearsandco.app">
+        <a class="badge" href="https://play.google.com/store/apps/details?id=com.thecodetourist.bearsandco&amp;referrer=utm_source%3Dwebsite%26utm_medium%3Dlanding%26utm_campaign%3Dhero">
           <img src="assets/google-play-badge.png" alt="Get it on Google Play" width="646" height="250">
         </a>
       </div>
       <div class="hero-shot">
-        <img src="assets/01-hero.webp" alt="The honey bear celebrating on top of the calculator, with 36 on the display" width="540" height="960">
+        <img src="assets/01-hero.webp" alt="The honey bear celebrating on top of the calculator, with 36 on the display" width="540" height="960" fetchpriority="high">
       </div>
     </div>
   </section>
@@ -227,10 +258,26 @@
           <p>Press and hold the display to copy the number, just like any other calculator.</p>
         </div>
         <div class="card">
-          <h3>No ads, no tracking</h3>
-          <p>No ads, no accounts and no data collection, and it works offline. Read the <a href="privacy.html">privacy policy</a>.</p>
+          <h3>A real calculator</h3>
+          <p>Add, subtract, multiply and divide, a percent key that works like a pocket calculator, and an 8-digit LCD-style display.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 id="faq-title">Before you install</h2>
+      <h3>Who is it for?</h3>
+      <p>Children who are getting to know numbers, and grown-ups who would like a calculator that makes them smile.</p>
+      <h3>Is it free? Are there ads?</h3>
+      <p>It is free, with no ads and no in-app purchases, so it is fine to hand to a child.</p>
+      <h3>Does it need an internet connection or an account?</h3>
+      <p>No. Everything runs on the phone, with no sign-in, and it works offline.</p>
+      <h3>Does it collect any data?</h3>
+      <p>No. The app only keeps your own settings (bear, keypad and sound) on your phone. See the <a href="privacy.html">privacy policy</a>.</p>
+      <h3>Is there an iPhone version?</h3>
+      <p>Not yet. Bears &amp; Co is available for Android on Google Play.</p>
     </div>
   </section>
 </main>
